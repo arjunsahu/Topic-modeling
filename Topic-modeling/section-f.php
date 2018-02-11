@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<?php
+
+if(!mysql_connect("demo.predictly.co","demo",""))
+{
+	die('oops connection problem ! --> '.mysql_error());
+}
+if(!mysql_select_db("csv_import_demo"))
+{
+	die('oops database selection problem ! --> '.mysql_error());
+}
+
+
+
+
+
+
+
+$analysis=$_POST['analysis']?:'aspect_like';
+$keywords=array('aspect_like','details_like','benefit_like','aspect_dislike','details_dislike','problem_dislike');
+
+if (in_array('aspect_like', $analysis)) {$divide=sizeof($analysis);echo $divide;}
+else if(in_array('details_like', $analysis)) {$divide=sizeof($analysis);echo $divide;}
+else if(in_array('benefit_like', $analysis)) {$divide=sizeof($analysis);echo $divide;}
+else if(in_array('aspect_dislike', $analysis)) {$divide=sizeof($analysis);echo $divide;}
+else if(in_array('details_dislike', $analysis)) {$divide=sizeof($analysis);echo $divide;}
+else {$divide=9;echo $divide;}
+
+
+foreach ($analysis as $value) {$select[] =  $value; }
+
+echo $centre= $_POST["centre"]?: '';//occupation
+echo $age_group= $_POST["age_group"]?: '';//maritial_status
+echo  $panel= $_POST["panel"]?: '';//panel_no
+echo  $age= $_POST["age"]?: '';//age
+echo $vechile_name= $_POST["vechile_name"]?: ''; //type_of_byer
+echo $intender= $_POST["intender"]?: '';//brand_intended
+$rank_before= $_POST["rank_before"]?: '';
+$concept= $_POST["concept"]?: '';
+$price= $_POST["price"]?: '';
+echo $mention= $_POST["mention"]?: '';//PJ
+
+echo $vechile_code= $_POST["vehicle_code"]?: '';//vichel
+$vechicle_before= $_POST["vechicle_before"]?: '';
+$vechicle_after= $_POST["vechicle_after"]?: '';
+
+
+
+
+$rank1= $_POST["rank1"]?: '';
+$rank3= $_POST["rank3"]?: '';
+$rank2= $_POST["rank2"]?: '';
+
+
+
+$rank4= $_POST["rank4"]?: '';
+$rank5= $_POST["rank5"]?: '';
+$rank6= $_POST["rank6"]?: '';
+
+
+$rank7= $_POST["rank7"]?: '';
+$rank8= $_POST["rank8"]?: '';
+$rank9= $_POST["rank9"]?: '';
+
+$rank10= $_POST["rank10"]?: '';
+$rank11= $_POST["rank11"]?: '';
+
+
+
+
+
+
+
+$rank1_a= $_POST["rank1_a"]?: '';
+$topic= $_POST["topic"]?: '';
+
+if ($mention==""){$mention_divide=3;}else{$mention_divide=1;}
+?>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Predictly Tech Labs | Web Application</title>
+  <meta name="description" content="Admin, Dashboard, Bootstrap, Bootstrap 4, Angular, AngularJS" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- for ios 7 style, multi-resolution icon of 152x152 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-barstyle" content="black-translucent">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
+  <meta name="apple-mobile-web-app-title" content="Predictly Tech Labs">
+  <!-- for Chrome on Android, multi-resolution icon of 196x196 -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" sizes="196x196" href="assets/images/logo.png">
+  
+  <!-- style -->
+  <link rel="stylesheet" href="assets/animate.css/animate.min.css" type="text/css" />
+  <link rel="stylesheet" href="assets/glyphicons/glyphicons.css" type="text/css" />
+  <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="assets/material-design-icons/material-design-icons.css" type="text/css" />
+
+  <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+  <!-- build:css assets/styles/app.min.css -->
+  <link rel="stylesheet" href="assets/styles/app.css" type="text/css" />
+  <!-- endbuild -->
+  <link rel="stylesheet" href="assets/styles/font.css" type="text/css" />
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  <script src="libs/jquery/jquery/dist/jquery.js"></script>
+<!-- Bootstrap -->
+  <script src="libs/jquery/tether/dist/js/tether.min.js"></script>
+  <script src="libs/jquery/bootstrap/dist/js/bootstrap.js"></script>
+<!-- core -->
+  <script src="libs/jquery/underscore/underscore-min.js"></script>
+  <script src="libs/jquery/jQuery-Storage-API/jquery.storageapi.min.js"></script>
+  <script src="libs/jquery/PACE/pace.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="http://highcharts.github.io/export-csv/export-csv.js"></script>
+  <script src="scripts/config.lazyload.js"></script>
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  	    <script src="libs/js/cloud.js"></script>
+  <script src="scripts/palette.js"></script>
+  <script src="scripts/ui-load.js"></script>
+  <script src="scripts/ui-jp.js"></script>
+  <script src="scripts/ui-include.js"></script>
+  <script src="scripts/ui-device.js"></script>
+  <script src="scripts/ui-form.js"></script>
+  <script src="scripts/ui-nav.js"></script>
+  <script src="scripts/ui-screenfull.js"></script>
+  <script src="scripts/ui-scroll-to.js"></script>
+  <script src="scripts/ui-toggle-class.js"></script>
+
+  <script src="scripts/app.js"></script>
+
+  <!-- ajax -->
+  <script src="libs/jquery/jquery-pjax/jquery.pjax.js"></script>
+  <script src="scripts/ajax.js"></script>
+  <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+    rel="stylesheet" type="text/css" />
+<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+    type="text/javascript"></script>
+ <style>
+
+ .border-right {
+    border-right: 1px solid #ddd;
+}
+</style> 
+ <style type="text/css">
+    .multiselect-container {
+        width: 250px !important;
+    }
+</style> 	
+<script>
+$(document).ready(function () {
+   document.getElementById("change_num").click();
+});
+$(document).ready(function(){
+	 
+$("#change_num").click(function(){
+    $("#percentage").hide();
+	 $("#sentiment").show();
+});
+
+$("#change_per").click(function(){
+    $("#percentage").show();
+	$("#sentiment").hide();
+});	
+});		
+</script>
+</head>
+<body  onload="document.getElementById('change_num').click();">
+  <div class="app" id="app">
+
+<!-- ############ LAYOUT START-->
+
+ <!-- aside -->
+  <div id="aside" class="app-aside modal fade nav-expand folded">
+    <div class="left navside grey dk" layout="column">
+      <div class="navbar no-radius">
+        <!-- brand -->
+        <a class="navbar-brand">
+        <img src="assets/images/imrb-logo-small.png" alt="." >
+        	<img src="assets/images/imrb-logo-small.png" alt="." class="hide">
+        	<span class="hidden-folded inline">IMRB</span>
+        </a>
+        <!-- / brand -->
+      </div>
+      <div flex class="hide-scroll">
+        <nav class="scroll nav-border b-primary">
+          
+            <ul class="nav" ui-nav>
+              <li class="nav-header hidden-folded">
+                <small class="text-muted">Main</small>
+              </li>
+              
+              <li>
+                <a href="dashboard.php" >
+                  <span class="nav-icon">
+                    <i class="material-icons">&#xe3fc;
+                      <span ui-include="'assets/images/i_0.svg'"></span>
+                    </i>
+                  </span>
+                  <span class="nav-text">Dashboard</span>
+                </a>
+              </li>
+          
+              <li>
+                <a>
+                  <span class="nav-caret">
+                    <i class="fa fa-caret-down"></i>
+                  </span>
+                  <span class="nav-label">
+                    <b class="label rounded label-sm primary"></b>
+                  </span>
+                  <span class="nav-icon">
+                    <i class="material-icons">&#xe5c3;
+                      <span ui-include="'assets/images/i_1.svg'"></span>
+                    </i>
+                  </span>
+                  <span class="nav-text">Sections</span>
+                </a>
+                <ul class="nav-sub">
+                  <li>
+                    <a href="section-b3.php" >
+                      <span class="nav-text">Section B3</span>
+                    </a>
+                  </li>
+                  <li>
+                     <a href="section-f.php" >
+                      <span class="nav-text">Section F</span>
+                    </a>
+                  </li>
+                
+                </ul>
+              </li>
+          
+       
+            </ul>
+        </nav>
+      </div>
+      <div flex-no-shrink>
+        <div ui-include="'views/blocks/aside.bottom.0.html'"></div>
+      </div>
+    </div>
+  </div>
+  <!-- / aside -->
+  
+  <!-- content -->
+  <div id="content" class="app-content box-shadow-z2 box-radius-1x" role="main">
+    <div class="app-header white box-shadow">
+       <div class="navbar">
+           <!-- Open side - Naviation on mobile -->
+           <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up">
+             <i class="material-icons">&#xe5d2;</i>
+           </a>
+           <!-- / -->
+       
+           <!-- Page title - Bind to $state's title -->
+           <div class="navbar-item pull-left h5" ng-bind="$state.current.data.title" id="pageTitle"></div>
+       
+           <!-- navbar right -->
+           <ul class="nav navbar-nav pull-right">
+             <li class="nav-item dropdown pos-stc-xs">
+               <a class="nav-link" href data-toggle="dropdown">
+                 <i class="material-icons">&#xe7f5;</i>
+                 <span class="label label-sm up warn">3</span>
+               </a>
+               <div ui-include="'views/blocks/dropdown.notification.html'"></div>
+             </li>
+             <li class="nav-item dropdown">
+               <a class="nav-link clear" href data-toggle="dropdown">
+                 <span class="avatar w-32">
+                   <img src="assets/images/a0.jpg" alt="...">
+                   <i class="on b-white bottom"></i>
+                 </span>
+               </a>
+               <div ui-include="'views/blocks/dropdown.user.html'"></div>
+             </li>
+             <li class="nav-item hidden-md-up">
+               <a class="nav-link" data-toggle="collapse" data-target="#collapse">
+                 <i class="material-icons">&#xe5d4;</i>
+               </a>
+             </li>
+           </ul>
+           <!-- / navbar right -->
+       
+           <!-- navbar collapse -->
+           <div class="collapse navbar-toggleable-sm" id="collapse">
+             <div ui-include="'views/blocks/navbar.form.right.html'"></div>
+             <!-- link and dropdown -->
+             <ul class="nav navbar-nav">
+               <li class="nav-item dropdown">
+                 <a class="nav-link" href="#" data-toggle="modal" data-target="#top">
+                   <i class="fa fa-fw fa-plus text-muted"></i>
+                   <span>Selection</span>
+                 </a>
+                
+               </li>
+             </ul>
+             <!-- / -->
+           </div>
+           <!-- / navbar collapse -->
+       </div>
+    </div>
+    <div class="app-footer">
+      <div class="p-a text-xs">
+        <div class="pull-right text-muted">
+          &copy; Copyright <strong>Predictly Tech Labs</strong> <span class="hidden-xs-down">- Built with PredictlyAI v1.1.3</span>
+          <a ui-scroll-to="content"><i class="fa fa-long-arrow-up p-x-sm"></i></a>
+        </div>
+        <div class="nav">
+          <a class="nav-link" href="">About</a>
+          <span class="text-muted">-</span>
+          <a class="nav-link label accent" href="https://www.predictly.co/">Get it</a>
+        </div>
+      </div>
+    </div>
+    <div ui-view class="app-body" id="view">
+
+<!-- ############ PAGE START-->
+<div class="row-col b-b">
+	<div class="col-md">
+		<div class="padding">
+			<div class="margin">
+				<h5 class="m-b-0 _300">Hi Jone, Welcome back</h5>
+			</div>
+			<div class="row-col box">
+				<div class="col-sm-4">
+					<div class="box-header">
+						<h3>Reports</h3>
+					</div>
+					<div class="box-body">
+						<p class="text-muted m-b-md">Dales nisi nec adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis</p>
+						<a href class="btn btn-sm rounded success">Read More</a>
+					</div>
+		        </div>
+		        <div class="col-sm-8 grey lt">
+				
+	        		<div class="box-header">
+			          <h3>Activities</h3>
+					  <div class="btn-group pull-right" style="margin-top: -2%;">
+    
+              <button type="button" class="btn btn-sm btn-outline b-primary  " id="change_num" >Number</button>
+               <button type="button" class="btn btn-sm btn-outline b-primary " id="change_per">Percentage</button>
+             
+            </div>
+					
+			          
+			        </div>
+			        <div class="box-body">
+				 <div id="sentiment"  style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
+<div id="percentage"  style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			          
+			        </div>
+		        </div>
+		    </div>
+			<br>
+			<div class="row">
+			    <div class="col-sm-7">
+			        <div class="box">
+			          <div class="box-header">
+			            <h3>Word Cloud</h3>
+			            <!--small>A general overview of your sales</small-->
+			          </div>
+			          <div class="box-tool">
+				        <ul class="nav">
+				          <li class="nav-item inline">
+				            <a class="nav-link">
+				              <i class="material-icons md-18">&#xe863;</i>
+				            </a>
+				          </li>
+				          <li class="nav-item inline dropdown">
+				            <a class="nav-link" data-toggle="dropdown">
+				              <i class="material-icons md-18">&#xe5d4;</i>
+				            </a>
+				            <div class="dropdown-menu dropdown-menu-scale pull-right">
+				              <a class="dropdown-item" href>This week</a>
+				              <a class="dropdown-item" href>This month</a>
+				              <a class="dropdown-item" href>This week</a>
+				              <div class="dropdown-divider"></div>
+				              <a class="dropdown-item">Today</a>
+				            </div>
+				          </li>
+				        </ul>
+				      </div>
+			          <div class="box-body">
+			           	 <div id="word_cloud" class="svg-container"></div>
+			          </div>
+			        </div>
+			    </div>
+				<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Branch </h3><!--button id="btn-Preview-Image">SVG</button> <button id="save">SVG</button-->
+                        </div>
+                        <div class="panel-body">
+                              <div id="tree"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+
+			</div>
+			</div>
+	</div>
+</div>
+
+<div class="modal fade inactive" id="chat" data-backdrop="false">
+  <div class="right w-xxl grey lt b-l">
+  	<div ui-include="'views/blocks/modal.chat.html'"></div>
+  </div>
+</div>
+<div class="modal fade" id="top">
+<form method="post" action="">
+  <div class="top  b-b" style="background-color:#F0F0F0">
+   <div class="box" style=" margin-bottom: 0rem;">
+        <div class="box-header">
+		<div class="row">
+		    <div class="col-md-8">
+          <h2>Section F</h2>
+          <small>Interviewer to code the vehicle to be exposed second.</small>
+		   </div>
+		     <div class="col-md-4">
+			 
+       <button class="btn btn-fw success pull-right"  type="submit" name="submit" value="Submit">Submit</button>
+		  </div>
+		
+		  </div>
+        </div>
+        <div class="box-divider m-a-0"></div>
+        <div class="box-body p-v-md" style="padding-left: 5%;padding-right: 5%">
+        
+		  <div class="row">
+		    <div class="col-md-6 border-right">
+			<!-- General -->
+			<div class="col-md-12 text-center" style="padding-bottom: 15px;"> 
+					<span  class="btn btn-sm btn-outline rounded b-accent">General</span> 
+					
+			</div>
+		
+          <div class="form-inline">
+		
+			<!-- City -->
+			<div class="row">
+			
+			<div class="col-sm-4">
+			<small class="label label-default label-as-badge">Select City</small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select class="form-control c-select" name="centre">
+				
+                  <option selected disabled>Select City</option>
+				  <option value="">All</option>
+                  <option value="Allahabad">Allahabad</option>
+                  <option value="Hoskote">Hoskote</option>
+                </select>
+              </div>
+            </div>
+			</div>
+			<div class="col-sm-4">
+			<small class="label label-default label-as-badge">Select Panel</small>
+			<div class="form-group row">
+             
+              <div class="col-sm-10">
+                <select class="form-control c-select" name="panel" >
+				
+                  <option selected disabled>Select Panel</option>
+				  <option value="">All</option>
+                  <option value="1">First Panel</option>
+                  <option value="2">Second Panel</option>
+                </select>
+              </div>
+            </div>
+			</div>
+	<div class="col-sm-4">
+	<small class="label label-default label-as-badge ">Select Age</small>
+			<div class="form-group row">
+             
+              <div class="col-sm-10">
+                <select class="form-control c-select" name="age">
+				<option selected disabled>Select Age</option>
+				   <option value="">ALL </option>
+                   <option value="23">23 </option>
+                   <option value="25">25 </option>
+                   <option value="28">28 </option>
+                   <option value="32">32 </option>
+                   <option value="30">30 </option>
+                   <option value="27">27 </option>
+                   <option value="26">26 </option>
+                   <option value="24">24 </option>
+                   <option value="22">22 </option>
+                   <option value="35">35 </option>
+                   <option value="33">33 </option>
+                   <option value="31">31 </option>
+                   <option value="20">20 </option>
+                   <option value="38">38 </option>
+                   <option value="29">29 </option>
+                   <option value="39">39 </option>
+                   <option value="37">37 </option>
+                   <option value="34">34 </option>
+                   <option value="36">36 </option>
+                   <option value="40">40 </option>
+                   <option value="42">42 </option>
+                   <option value="49">49 </option>
+                   <option value="48">48 </option>
+                   <option value="44">44 </option>
+                   <option value="43">43 </option>
+                   <option value="41">41 </option>
+                   <option value="45">45 </option>
+                </select>
+              </div>
+            </div>
+			</div>
+
+			</div>
+
+			
+		 </div>
+		<br>
+		
+		<div class="form-inline">
+		
+			<!-- City -->
+			<div class="row">
+			
+			<div class="col-sm-4">
+			<small class="label label-default label-as-badge">Select Age Group</small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select class="form-control c-select" name="age_group" >
+				
+                  <option selected disabled>Select Age Group</option>
+				  <option value="">All</option>
+                  <option value="21">20-30</option>
+                  <option value="31">31-40</option>
+                </select>
+              </div>
+            </div>
+			</div>
+			<div class="col-sm-4">
+			<small class="label label-default label-as-badge">Select Intender Vechilce</small>
+			<div class="form-group row">
+             
+              <div class="col-sm-10">
+                <select class="form-control c-select" name="intender">
+				
+                  <option selected disabled>Select Intender</option>
+                  <option value="">All</option>    
+                  <option  value="Hero Splendor Plus">Hero Splendor Plus </option>
+                  <option  value="Hero Splendor Pro">Hero Splendor Pro </option>
+                  <option  value="Bajaj Platina">Bajaj Platina </option>
+                  <option  value="Hero HF Deluxe">Hero HF Deluxe </option>
+                  <option  value="Bajaj CT 100 ">Bajaj CT 100  </option>
+                </select>
+              </div>
+            </div>
+			</div>
+
+			</div>
+
+			
+		 </div>
+		
+		
+          </div>
+			
+			<div class="col-md-6">
+			<!-- Section B -->
+			<div class="col-md-12 text-center" style="padding-bottom: 15px;"> 
+					<span  class="btn btn-sm btn-outline rounded b-accent">Section F </span> 
+					
+			</div>
+		
+          <div class="form-inline">
+		
+			<!-- City -->
+			<div class="row">
+			
+			<div class="col-sm-6">
+			<small class="label label-default label-as-badge">Ranks 1</small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select class="form-control c-select" name="rank1_a">
+				
+                  <option selected disabled>Select Vehicle Exposed</option>
+                  <option value="">ALL </option>
+                  
+<option value="Hero Splendor Plus">Hero Splendor Plus</option>
+<option value="Hero Splendor Pro">Hero Splendor Pro</option>
+<option value="Hero Splendor">Hero Splendor(Plus & Pro)</option>
+<option value="Bajaj Platina"> Bajaj Platina</option>
+<option value="TVS Pacific Q"> TVS Pacific Q</option>
+<option value="Hero HF Deluxe"> Hero HF Deluxe</option>
+<option value="TVS Pacific P"> TVS Pacific P</option>
+<option value="Bajaj CT 100 "> Bajaj CT 100 </option>
+
+                </select>
+              </div>
+            </div>
+			</div>
+			
+			
+			<div class="col-sm-6">
+			<small class="label label-default label-as-badge">Ranks 2</small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select class="form-control c-select" name="rank1_a">
+				
+                  <option selected disabled>Select Vehicle Exposed</option>
+                  <option value="">ALL </option>
+                  
+<option value="Hero Splendor Plus">Hero Splendor Plus</option>
+<option value="Hero Splendor Pro">Hero Splendor Pro</option>
+<option value="Hero Splendor">Hero Splendor(Plus & Pro)</option>
+<option value="Bajaj Platina"> Bajaj Platina</option>
+<option value="TVS Pacific Q"> TVS Pacific Q</option>
+<option value="Hero HF Deluxe"> Hero HF Deluxe</option>
+<option value="TVS Pacific P"> TVS Pacific P</option>
+<option value="Bajaj CT 100 "> Bajaj CT 100 </option>
+
+                </select>
+              </div>
+            </div>
+			</div>
+			
+			
+			
+				</div>
+
+			
+		 </div>
+		 
+		 <br>
+		 
+		 <div class="col-sm-6">
+			<small class="label label-default label-as-badge">Ranks 3</small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select class="form-control c-select" name="rank1_a">
+				
+                  <option selected disabled>Select Vehicle Exposed</option>
+                  <option value="">ALL </option>
+                  
+<option value="Hero Splendor Plus">Hero Splendor Plus</option>
+<option value="Hero Splendor Pro">Hero Splendor Pro</option>
+<option value="Hero Splendor">Hero Splendor(Plus & Pro)</option>
+<option value="Bajaj Platina"> Bajaj Platina</option>
+<option value="TVS Pacific Q"> TVS Pacific Q</option>
+<option value="Hero HF Deluxe"> Hero HF Deluxe</option>
+<option value="TVS Pacific P"> TVS Pacific P</option>
+<option value="Bajaj CT 100 "> Bajaj CT 100 </option>
+
+                </select>
+              </div>
+            </div>
+			</div>
+			
+		
+		
+		<div class="form-inline">
+		
+			<!-- City -->
+			<div class="row">
+			
+			<div class="col-sm-6">
+			<small class="label label-default label-as-badge"> Analysis </small>	
+			 
+			 <div class="form-group row">
+            
+              <div class="col-sm-10">
+			  
+                <select id="analysis" name="analysis[]" multiple="multiple" class="form-control c-select" >
+				
+                  
+            
+                  
+<option value="choose_rank1">Reasons for  choosing rank 1</option> 
+    <option  value="choose_rank2">Reasons for not choosing rank 2 </option>
+	 <option  value="choose_rank3">Reasons for not choosing Rank 3</option>
+
+                </select>
+              </div>
+            </div>
+			</div>
+		
+			</div>
+
+			
+		 </div>
+		
+		
+          </div>
+			
+		</div>
+		
+        </div>
+      </div>
+  </div>
+
+  </form>
+  </div>
+
+<!-- ############ PAGE END-->
+
+    </div>
+  </div>
+  <!-- / content -->
+
+  <!-- theme switcher -->
+  <div id="switcher">
+    <div class="switcher box-color dark-white text-color" id="sw-theme">
+      <a href ui-toggle-class="active" target="#sw-theme" class="box-color dark-white text-color sw-btn">
+        <i class="fa fa-gear"></i>
+      </a>
+      <div class="box-header">
+       
+        <h2>Theme Switcher</h2>
+      </div>
+      <div class="box-divider"></div>
+      <div class="box-body">
+        <p class="hidden-md-down">
+          <label class="md-check m-y-xs"  data-target="folded">
+            <input type="checkbox">
+            <i class="green"></i>
+            <span class="hidden-folded">Folded Aside</span>
+          </label>
+          <label class="md-check m-y-xs" data-target="boxed">
+            <input type="checkbox">
+            <i class="green"></i>
+            <span class="hidden-folded">Boxed Layout</span>
+          </label>
+          <label class="m-y-xs pointer" ui-fullscreen>
+            <span class="fa fa-expand fa-fw m-r-xs"></span>
+            <span>Fullscreen Mode</span>
+          </label>
+        </p>
+        <p>Colors:</p>
+        <p data-target="themeID">
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'primary', accent:'accent', warn:'warn'}">
+            <input type="radio" name="color" value="1">
+            <i class="primary"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'accent', accent:'cyan', warn:'warn'}">
+            <input type="radio" name="color" value="2">
+            <i class="accent"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'warn', accent:'light-blue', warn:'warning'}">
+            <input type="radio" name="color" value="3">
+            <i class="warn"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'success', accent:'teal', warn:'lime'}">
+            <input type="radio" name="color" value="4">
+            <i class="success"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'info', accent:'light-blue', warn:'success'}">
+            <input type="radio" name="color" value="5">
+            <i class="info"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'blue', accent:'indigo', warn:'primary'}">
+            <input type="radio" name="color" value="6">
+            <i class="blue"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'warning', accent:'grey-100', warn:'success'}">
+            <input type="radio" name="color" value="7">
+            <i class="warning"></i>
+          </label>
+          <label class="radio radio-inline m-a-0 ui-check ui-check-color ui-check-md" data-value="{primary:'danger', accent:'grey-100', warn:'grey-300'}">
+            <input type="radio" name="color" value="8">
+            <i class="danger"></i>
+          </label>
+        </p>
+        <p>Themes:</p>
+        <div data-target="bg" class="text-u-c text-center _600 clearfix">
+          <label class="p-a col-xs-6 light pointer m-a-0">
+            <input type="radio" name="theme" value="" hidden>
+            Light
+          </label>
+          <label class="p-a col-xs-6 grey pointer m-a-0">
+            <input type="radio" name="theme" value="grey" hidden>
+            Grey
+          </label>
+          <label class="p-a col-xs-6 dark pointer m-a-0">
+            <input type="radio" name="theme" value="dark" hidden>
+            Dark
+          </label>
+          <label class="p-a col-xs-6 black pointer m-a-0">
+            <input type="radio" name="theme" value="black" hidden>
+            Black
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="switcher box-color black lt" id="sw-demo">
+      <a href ui-toggle-class="active" target="#sw-demo" class="box-color black lt text-color sw-btn">
+        <i class="fa fa-list text-white"></i>
+      </a>
+      <div class="box-header">
+        <h2>Your Selection</h2>
+      </div>
+      <div class="box-divider"></div>
+      <div class="box-body">
+        <div class="text-u-c text-center _600 clearfix">
+<style>
+ td {
+    border: 1px solid white;
+    padding: 5px;
+    text-align: left;
+  }
+</style>		
+		<table style="width:100%">
+   <tr>
+    <td>Center</td>
+    <td><?php echo $centre?:'All' ?></td> 
+   </tr>
+   <tr>
+    <td>Panel</td>
+    <td><?php echo $panel?:'All' ?></td> 
+   </tr>
+    <tr>
+    <td>Age</td>
+    <td><?php echo $age?:'All' ?></td> 
+   </tr>
+    <tr>
+    <td>Vechile Exposed</td>
+    <td><?php echo $vechile_name?:'All' ?></td> 
+   </tr>
+     <tr>
+    <td>Intender Name</td>
+    <td><?php echo $intender?:'All' ?></td> 
+   </tr>
+   <tr>
+    <td>Mention</td>
+    <td><?php echo $mention?:'All' ?></td> 
+   </tr> 
+    <tr>
+    <td>Analysis</td>
+    <td><?php echo implode($select,"| ") ?></td> 
+   </tr>   
+</table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / -->
+
+<!-- ############ LAYOUT END-->
+
+  </div>
+<!-- build:js scripts/app.html.js -->
+<!-- jQuery -->
+  
+<script type="text/javascript">
+    $(function () {
+        $('#analysis').multiselect({
+            includeSelectAllOption: true
+        });
+    });
+	
+
+</script>
+<!-- endbuild -->
+<!-- Chart Building Processes -->
+<?php 
+
+$result=mysql_query("select count(id) from imrb.oct_16  where centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'") or
+die(mysql_error());
+$data=mysql_fetch_array($result);
+$deno= $data[0]/$mention_divide;
+  echo "<script>console.log( 'Debug Objects: " . $deno . "' );</script>";
+foreach ($analysis as $value) { $head_light[] = "$value REGEXP 'head_light|front_light|head_lamp|front_lamp|headlight| light '" ;}
+foreach ($analysis as $value) { $wheel[] = "$value REGEXP 'wheel|brake|alloy|tyre'" ;}
+foreach ($analysis as $value) { $handle[] = "$value REGEXP 'hand|mirror|grip'" ;}
+foreach ($analysis as $value) { $indicator[] = "$value REGEXP 'indic'" ;}
+foreach ($analysis as $value) { $seats[] = "$value REGEXP 'seat|sit|Pillion|rail|Sear'" ;}
+foreach ($analysis as $value) { $fuel_tank[] = "$value REGEXP 'fuel|petrol|tank|gas'" ;}
+foreach ($analysis as $value) { $tail_lamp[] = "$value REGEXP 'back_light|tail_light|Rear_lamp|tail_lamp|Rear light|rear_panel'" ;}
+foreach ($analysis as $value) { $guards[] = "$value REGEXP 'guard|saree'" ;}
+foreach ($analysis as $value) { $silencer[] = "$value REGEXP 'silen'" ;}
+foreach ($analysis as $value) { $graphics[] = "$value REGEXP 'Tank_pad|stick|grap'" ;}
+foreach ($analysis as $value) { $color[] = "$value REGEXP 'colo|silver|black|red'" ;}
+foreach ($analysis as $value) { $front_dome[] = "$value REGEXP 'front_dome|visor|dome '" ;}
+foreach ($analysis as $value) { $carrier[] = "$value REGEXP 'lug|carr|bag|suitcase'" ;}
+foreach ($analysis as $value) { $speedometer[] = "$value REGEXP 'meter'" ;}
+foreach ($analysis as $value) { $over_shape[] = "$value REGEXP 'overall shap|design|Body'" ;}
+foreach ($analysis as $value) { $over_desgin[] = "$value REGEXP 'design'" ;}
+
+foreach ($analysis as $value) { $mileage[] = "$value REGEXP 'mile|average|kmps'" ;}
+foreach ($analysis as $value) { $power[] = "$value REGEXP ' power |engine|start|kick'" ;}
+foreach ($analysis as $value) { $comfort[] = "$value REGEXP 'comfort|shock|smooth|slip'" ;}
+foreach ($analysis as $value) { $look[] = "$value REGEXP 'look|sty'" ;}
+foreach ($analysis as $value) { $maintenance[] = "$value REGEXP 'mainte|oil'" ;}
+foreach ($analysis as $value) { $safe[] = "$value REGEXP 'lock|safe|accide'" ;}
+foreach ($analysis as $value) { $side_panel[] = "$value REGEXP 'side|stand'" ;}
+foreach ($analysis as $value) { $cover[] = "$value REGEXP 'cover'" ;}
+foreach ($analysis as $value) { $foot_rest[] = "$value REGEXP 'Leg_pad|foot_rest|foot rest|footrest'" ;}
+foreach ($analysis as $value) { $toolbox[] = "$value REGEXP 'toolbox|utility box'" ;}
+foreach ($analysis as $value) { $none[] = "$value REGEXP 'none'" ;}
+
+
+foreach ($analysis as $value) { $count[] = "count($value)" ;}
+
+
+
+$v1_q = mysql_query("
+select
+count(case when (".implode($head_light," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as head_light,
+count(case when (".implode($wheel," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as wheel,
+count(case when (".implode($handle," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as handle,
+count(case when (".implode($indicator," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as indicator,
+count(case when (".implode($seats," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as seats,
+count(case when (".implode($fuel_tank," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as fuel_tank,
+count(case when (".implode($tail_lamp," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as tail_lamp,
+count(case when (".implode($guards," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as guards,
+count(case when (".implode($silencer," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as silencer,
+count(case when (".implode($graphics," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as graphics,
+count(case when (".implode($color," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as color,
+count(case when (".implode($front_dome," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as front_dome,
+count(case when (".implode($speedometer," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as speedometer,
+count(case when (".implode($over_shape," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as over_shape,
+
+count(case when (".implode($mileage," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as mileage,
+count(case when (".implode($power," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as power,
+count(case when (".implode($comfort," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as comfort,
+
+count(case when (".implode($maintenance," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as maintenance,
+count(case when (".implode($safe," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as safe,
+count(case when (".implode($carrier," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as carrier,
+count(case when (".implode($side_panel," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as side_panel,
+count(case when (".implode($cover," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as cover,
+count(case when (".implode($foot_rest," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as foot_rest,
+count(case when (".implode($toolbox," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'then 1 end ) as toolbox,
+
+count(case when (".implode($none," OR ")." ) and  centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%' then 1 end ) as none
+
+from oct_16
+
+
+
+");
+
+$v1s = array();
+
+
+       while($rv1 = mysql_fetch_array($v1_q)) {
+       $v1[0] = $rv1[0]/9;
+$v1[1] = $rv1[1]/9;
+$v1[2] = $rv1[2]/9;
+$v1[3] = $rv1[3]/9;
+$v1[4] = $rv1[4]/9;
+$v1[5] = $rv1[5]/9;
+$v1[6] = $rv1[6]/9;
+ $v1[7] = $rv1[7]/9;
+$v1[8] = $rv1[8]/9;
+$v1[9] = $rv1[9]/9;
+$v1[10] = $rv1[10]/9;
+$v1[11] = $rv1[11]/9;
+$v1[12] = $rv1[12]/9;
+$v1[13] = $rv1[13]/9;
+$v1[14] = $rv1[14]/9;
+$v1[15] = $rv1[15]/9;
+$v1[16] = $rv1[16]/6;
+$v1[17] = $rv1[17]/9;
+$v1[18] = $rv1[18]/9;
+$v1[19] = $rv1[19]/9;
+$v1[20] = $rv1[20]/9;
+$v1[21] = $rv1[21]/9;
+$v1[22] = $rv1[22]/9;
+$v1[23] = $rv1[23]/9;
+$v1[24] = $rv1[24]/9;
+
+
+
+}
+
+
+foreach ($v1 as $value12) {
+
+  $v2[] = $value12*100 / $deno;
+
+}
+
+
+
+
+   
+
+?>
+    
+	
+<?php mysql_close($con);?>
+
+
+
+<script>
+Highcharts.createElement('link', {
+   href: 'https://fonts.googleapis.com/css?family=Unica+One',
+   rel: 'stylesheet',
+   type: 'text/css'
+}, null, document.getElementsByTagName('head')[0]);
+
+Highcharts.theme = {
+   colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+      '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+   chart: {
+      backgroundColor: '#424242',
+         
+    
+      style: {
+         fontFamily: ''
+      },
+      plotBorderColor: '#606063'
+   },
+   title: {
+      style: {
+         color: '#E0E0E3',
+         textTransform: 'uppercase',
+         fontSize: '20px'
+      }
+   },
+   subtitle: {
+      style: {
+         color: '#E0E0E3',
+         textTransform: 'uppercase'
+      }
+   },
+   xAxis: {
+      gridLineColor: '#707073',
+      labels: {
+         style: {
+            color: '#E0E0E3'
+         }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      title: {
+         style: {
+            color: '#A0A0A3'
+
+         }
+      }
+   },
+   yAxis: {
+      gridLineColor: '#707073',
+      labels: {
+         style: {
+            color: '#E0E0E3'
+         }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      tickWidth: 1,
+      title: {
+         style: {
+            color: '#A0A0A3'
+         }
+      }
+   },
+   tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.85)',
+      style: {
+         color: '#F0F0F0'
+      }
+   },
+   plotOptions: {
+      series: {
+         dataLabels: {
+            color: '#B0B0B3'
+         },
+         marker: {
+            lineColor: '#333'
+         }
+      },
+      boxplot: {
+         fillColor: '#505053'
+      },
+      candlestick: {
+         lineColor: 'white'
+      },
+      errorbar: {
+         color: 'white'
+      }
+   },
+   legend: {
+      itemStyle: {
+         color: '#E0E0E3'
+      },
+      itemHoverStyle: {
+         color: '#FFF'
+      },
+      itemHiddenStyle: {
+         color: '#606063'
+      }
+   },
+   credits: {
+      style: {
+         color: '#666'
+      }
+   },
+   labels: {
+      style: {
+         color: '#707073'
+      }
+   },
+
+
+   navigation: {
+      buttonOptions: {
+         symbolStroke: '#DDDDDD',
+         theme: {
+            fill: '#505053'
+         }
+      }
+   },
+
+   // scroll charts
+   rangeSelector: {
+      buttonTheme: {
+         fill: '#505053',
+         stroke: '#000000',
+         style: {
+            color: '#CCC'
+         },
+         states: {
+            hover: {
+               fill: '#707073',
+               stroke: '#000000',
+               style: {
+                  color: 'white'
+               }
+            },
+            select: {
+               fill: '#000003',
+               stroke: '#000000',
+               style: {
+                  color: 'white'
+               }
+            }
+         }
+      },
+      inputBoxBorderColor: '#505053',
+      inputStyle: {
+         backgroundColor: '#333',
+         color: 'silver'
+      },
+      labelStyle: {
+         color: 'silver'
+      }
+   },
+
+   navigator: {
+      handles: {
+         backgroundColor: '#666',
+         borderColor: '#AAA'
+      },
+      outlineColor: '#CCC',
+      maskFill: 'rgba(255,255,255,0.1)',
+      series: {
+         color: '#7798BF',
+         lineColor: '#A6C7ED'
+      },
+      xAxis: {
+         gridLineColor: '#505053'
+      }
+   },
+
+   scrollbar: {
+      barBackgroundColor: '#808083',
+      barBorderColor: '#808083',
+      buttonArrowColor: '#CCC',
+      buttonBackgroundColor: '#606063',
+      buttonBorderColor: '#606063',
+      rifleColor: '#FFF',
+      trackBackgroundColor: '#404043',
+      trackBorderColor: '#404043'
+   },
+
+   // special colors for some of the
+   legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+   background2: '#505053',
+   dataLabelsColor: '#B0B0B3',
+   textColor: '#C0C0C0',
+   contrastTextColor: '#F0F0F3',
+   maskColor: 'rgba(255,255,255,0.3)'
+};
+
+// Apply the theme
+Highcharts.setOptions(Highcharts.theme);
+
+
+$(function () {
+    $('#sentiment').highcharts({
+		
+        chart: {
+            type: 'column'
+        },
+		
+		 credits: {
+            enabled: false
+        },
+
+        title: {
+            text: ''
+        },
+		
+        subtitle: {
+            text: 'Select :- <?php echo implode($select,",")
+?> | Rank1 :- <?php echo $rank1?:"ALL";?> | Age Group :- <?php echo $age_group?:"ALL";?> | Panel :- <?php echo $panel?:"ALL";?> | Age :- <?php echo $age?:"ALL";?> | Vechile_name :- <?php echo $vechile_name?:"ALL";?> | Vechile_code :- <?php echo $vechile_code?:"ALL";?> | Mention :- <?php echo $mention?:"ALL";?>| Intender :- <?php echo $intender?:"ALL";?>'
+        },
+	xAxis: {
+       categories: ['Head_Light','Wheel','Handle','Indicator','Seats','Fuel_Tank','Tail_Lamp','Guards','Silencer','Graphics','Color','Front Dome','Speedometer','Over Shape','Mileage','Power','Comfort','Maintenance','Safety','Carrier','Side Panel','Cover','Foot Rest','Toolbox','None'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+		
+   tooltip: {
+            shared: false,
+            formatter: function() {
+                var serie = this.series;
+                //NOTE: may cause efficiency issue when we got lots of points, data in series
+                //should be change from [x, y] to {"x": x, "y": y, "index": index}
+                var index = this.series.data.indexOf(this.point);
+                var s = '<b>' + this.x + '</b><br>';
+                s += '<span style="color:' + serie.color + '">' + "Number" + '</span>: <b>' + Highcharts.numberFormat(this.y,0) + '</b><br/>';
+             
+                return s;
+            }
+        },
+          
+      
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: ' ',
+		
+          data: [ <?php echo join($v1, ',');?>	 ]
+		  
+        }]
+    });
+});
+</script>
+<script>
+$(function () {
+    $('#percentage').highcharts({
+		
+        chart: {
+            type: 'column'
+        },
+		
+		 credits: {
+            enabled: false
+        },
+
+        title: {
+            text: ''
+        },
+		
+        subtitle: {
+            text: 'Select :- <?php echo implode($select,",")
+?> | Rank1 :- <?php echo $rank1?:"ALL";?> | Age Group :- <?php echo $age_group?:"ALL";?> | Panel :- <?php echo $panel?:"ALL";?> | Age :- <?php echo $age?:"ALL";?> | Vechile_name :- <?php echo $vechile_name?:"ALL";?> | Vechile_code :- <?php echo $vechile_code?:"ALL";?> | Mention :- <?php echo $mention?:"ALL";?>| Intender :- <?php echo $intender?:"ALL";?>'
+        },
+	xAxis: {
+    categories: ['Head_Light','Wheel','Handle','Indicator','Seats','Fuel_Tank','Tail_Lamp','Guards','Silencer','Graphics','Color','Front Dome','Speedometer','Over Shape','Mileage','Power','Comfort','Maintenance','Safety','Carrier','Side Panel','Cover','Foot Rest','Toolbox','None'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+		
+   tooltip: {
+            shared: false,
+            formatter: function() {
+                var serie = this.series;
+                //NOTE: may cause efficiency issue when we got lots of points, data in series
+                //should be change from [x, y] to {"x": x, "y": y, "index": index}
+                var index = this.series.data.indexOf(this.point);
+                var s = '<b>' + this.x + '</b><br>';
+                s += '<span style="color:' + serie.color + '">' + "Percentage" + '</span>: <b>' + Highcharts.numberFormat(this.y,0) + ' %</b><br/>';
+             
+                return s;
+            }
+        },
+          
+      
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: ' ',
+		
+          data: [ <?php echo join($v2, ',');?>	 ]
+		  
+        }]
+    });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+   $('#load').show(); // Show loading animation
+   $('#word_cloud_content').hide(); // Hide content until loaded
+
+});
+
+</script>
+
+<?php
+	
+
+
+$word = mysql_query("Select  ".implode($select,",")."   from oct_16 where centre like '%".$centre."%' and rank1  like '%".$rank1."%' and rank1_a  like '%".$rank1_a."%' and ( rank2  like '%".$rank2."%' and  rank3  like '%".$rank3."%' ) and age_group like '%".$age_group."%' and panel like '%".$panel."%' and age like '%".$age."%' and vechile_name like '%".$vechile_name."%' and intender like '%".$intender."%' and  vehicle_code like '%".$vechile_code."%' and mention like '%".$mention."%'  ");
+$words = array();
+while($r = mysql_fetch_array($word)) {
+      $words[] = $r[0];	
+}
+ 
+?>
+   <script>
+d3.select(".save-as-image").on("click.saveAsImage", function () {
+    saveSvgAsPng(d3.select('.svg-container svg').node(), 'imrb-<?php echo date("Y-m-d H:i:s");?>.png');
+});
+      // Declare inputs and initiate wordcloud draw.    
+      (function(){
+          var text ="<?php echo join($words,'.');?>",
+              width = 600,
+              height = 400,
+              rotate_words = true,
+              unique_word_counts = {};
+    
+          var wordmap = processText(text);
+    
+          var svg = d3.select('#word_cloud').append('svg');
+    
+          drawCloud(wordmap, width, height, svg, rotate_words, returnSvg);
+        
+          // return svg
+          function returnSvg(body){
+                $('#load').hide(); 
+      
+			   $('#word_cloud_content').show(); 
+              console.log("wordcloud_created");
+              console.log(body);
+          }
+      })();
+      
+      // Parse a body of text into sorted word counts.
+      function processText(text){
+          var unique_word_counts = {},
+              exclude_words = "a's,able,about,above,according,accordingly,across,actually,after,afterwards,again,against,ain't,all,allow,allows,almost,alone,along,already,also,although,always,am,among,amongst,an,and,another,any,anybody,anyhow,anyone,anything,anyway,anyways,anywhere,apart,appear,appreciate,appropriate,are,aren't,around,as,aside,ask,asking,associated,at,available,away,awfully,be,became,because,become,becomes,becoming,been,before,beforehand,behind,being,believe,below,beside,besides,best,better,between,beyond,both,brief,but,by,c'mon,c's,came,can,can't,cannot,cant,cause,causes,certain,certainly,changes,clearly,co,com,come,comes,concerning,consequently,consider,considering,contain,containing,contains,corresponding,could,couldn't,course,currently,definitely,described,despite,did,didn't,didn`t,different,do,does,doesn't,doing,don`t,don't,done,down,downwards,during,each,edu,eg,eight,either,else,elsewhere,enough,entirely,especially,et,etc,even,ever,every,everybody,everyone,everything,everywhere,ex,exactly,example,except,far,few,fifth,first,five,followed,following,follows,for,former,formerly,forth,four,from,further,furthermore,get,gets,getting,given,gives,go,goes,going,gone,got,gotten,greetings,had,hadn't,happens,hardly,has,hasn't,have,haven't,having,he,he's,hello,help,hence,her,here,here's,hereafter,hereby,herein,hereupon,hers,herself,hi,him,himself,his,hither,hopefully,how,howbeit,however,i'd,i'll,i'm,i've,ie,if,ignored,immediate,in,inasmuch,inc,indeed,indicate,indicated,indicates,inner,insofar,instead,into,inward,is,isn't,it,it'd,it'll,it`s,it's,its,itself,just,keep,keeps,kept,know,knows,known,last,lately,later,latter,latterly,least,less,lest,let,let's,like,liked,likely,little,look,looking,looks,ltd,mainly,many,may,maybe,me,mean,meanwhile,merely,might,more,moreover,most,mostly,much,must,my,myself,name,namely,nd,near,nearly,necessary,need,needs,neither,never,nevertheless,new,next,nine,no,nobody,non,none,noone,nor,normally,not,nothing,novel,now,nowhere,obviously,of,off,often,oh,ok,okay,old,on,once,one,ones,only,onto,or,other,others,otherwise,ought,our,ours,ourselves,out,outside,over,overall,own,particular,particularly,per,perhaps,placed,please,plus,possible,presumably,probably,provides,que,quite,qv,rather,rd,re,really,reasonably,regarding,regardless,regards,relatively,respectively,right,said,same,saw,say,saying,says,second,secondly,see,seeing,seem,seemed,seeming,seems,seen,self,selves,sensible,sent,serious,seriously,seven,several,shall,she,should,shouldn't,since,six,so,some,somebody,somehow,someone,something,sometime,sometimes,somewhat,somewhere,soon,sorry,specified,specify,specifying,still,sub,such,sup,sure,t's,take,taken,tell,tends,th,than,thank,thanks,thanx,that,that's,thats,the,their,theirs,them,themselves,then,thence,there,there's,thereafter,thereby,therefore,therein,theres,thereupon,these,they,they'd,they'll,they're,they've,think,third,this,thorough,thoroughly,those,though,three,through,throughout,thru,thus,to,together,too,took,toward,towards,tried,tries,truly,try,trying,twice,two,un,under,unfortunately,unless,unlikely,until,unto,up,upon,us,use,used,useful,uses,using,usually,value,various,very,via,viz,vs,want,wants,was,wasn't,way,we,we'd,we'll,we're,we've,welcome,well,went,were,weren't,what,what's,whatever,when,whence,whenever,where,where's,whereafter,whereas,whereby,wherein,whereupon,wherever,whether,which,while,whither,who,who's,whoever,whole,whom,whose,why,will,willing,wish,with,within,without,won't,wonder,would,would,wouldn't,yes,yet,you,you'd,you'll,you're,you've,your,yours,yourself,yourselves,zero,a,t,b,c,d,e,,h,i,j,k,l,m,n,o,p,q,r,s,u,v,w,x,y,z,my,me,abundant,accomplished,achieving,active,admirable,adorable,adventurous,admired,affluent,agreeable,alert,aligned,alive,amazing,appealing,appreciate,artistic,astounding,astute,attentive,attractive,auspicious,authentic,awake,aware,beaming,beautiful,best,blessed,bliss,bold,bright,brilliant,brisk,buoyant,calm,capable,centered,certain,charming,cheerful,clear,clever,competent,complete,confident,connected,conscious,considerate,convenient,courageous,creative,daring,dazzling,delicious,delightful,desirable,determined,diligent,discerning,discover,dynamic,eager,easy,efficient,effortless,elegant,eloquent,energetic,endless,enhancing,engaging,enormous,enterprising,enthusiastic,enticing,excellent,exceptional,exciting,experienced,exquisite,fabulous,fair,far-sighted,fascinating,fine,flattering,flourishing,fortunate,free,friendly,fulfilled,fun,generous,genuine,gifted,glorious,glowing,good,good-looking,gorgeous,graceful,gracious,grand,great,handsome,happy,hardy,harmonious,healed,healthy,helpful,honest,humorous,ideal,imaginative,impressive,industrious,ingenious,innovative,inspired,intelligent,interested,interesting,intuitive,inventive,invincible,inviting,irresistible,joyous,judicious,keen,kind,knowing,limitless,lively,loving,lucky,luminous,magical,magnificent,marvelous,masterful,mighty,miraculous,motivated,natural,neat,nice,nurturing,noble,optimistic,outstanding,passionate,peaceful,perfect,persevering,persistent,playful,pleasing,plentiful,positive,powerful,precious,prepared,productive,profound,prompt,prosperous,proud,qualified,quick,radiant,reasonable,refined,refreshing,relaxing,reliable,remarkable,resolute,resourceful,respected,rewarding,robust,safe,satisfied,secure,seductive,self-reliant,sensational,sensible,sensitive,serene,sharing,skillful,smart,smashing,smooth,sparkling,spiritual,splendid,strong,stunning,successful,superb,swift,talented,tenacious,terrific,thankful,thrilling,thriving,timely,trusting,truthful,ultimate,unique,valiant,valuable,versatile,vibrant,victorious,vigorous,vivacious,vivid,warm,wealthy,well,whole,wise,wonderful,worthy,young,youthful,zeal,zest,anger,avoid,awful,ashamed,annoy,abandon,abuse,afraid,alone,attack,alcohol,beg,bore,bad,broken,blame,beer,booze,bomb,cannot,clumsy,confuse,cheat,delay,danger,difficult,dislike,defeat,dead,damage,deny,depress,drug,dirty,dishonest,damage,divorce,disease,dreadful,disaster,dumb,evil,end,excuse,embarrass,enemy,fear,fight,furious,fault,fail,failure,foul,fright,force,false,gossip,greed,guilty,hate,hurt,hide,hunger,horrible,harm,harmful,humiliate,impossible,ignore,insecure,ill,insane,inferior,insult,jealous,kill,lie,lost,loose,miser,no,not,never,offensive,pain,pessimist,problem,poor,poison,quit,reject,revenge,rude,sad,sorry,sorrow,steal,suspicious,suspect,traitor,tension,ugly,upset,un-fair,healthy,pleasant,happy,just,favourable,wanted,PredictlyAId,war,worthless,zero,1,2,3,4,5,6,7,8,9,0,@,$,%,#,vehicle,provide,bike,let,keeping,rider";
+    
+          var tokenized_text = text.split(/[ '\-\(\)\*":;\[\]|{},.!?]+/);
+          tokenized_text.forEach(function(raw_word){
+              var word = raw_word.toLowerCase();
+              if (word != "" && exclude_words.indexOf(word)==-1 && word.length>1){
+                  word in unique_word_counts ?
+                      unique_word_counts[word]++ :
+                      (unique_word_counts[word] = 1 + Math.random());
+              }
+          });
+    
+          var wordmap = d3.entries(unique_word_counts).sort(function(a,b){
+              return b.value - a.value;
+          });
+    
+          return wordmap;
+      }
+    
+      // draw our wordcloud.
+      function drawCloud(wordmap, width, height, svg, rotate_words, callback){
+          var cloud = d3.layout.cloud;
+          var max = Math.min(width / 5, height / 5, 100),
+              font_size = d3.scale.linear()
+                  .domain([ 1, d3.max( wordmap, function(d) { return d.value; })])
+                  .range([max / 10, max]),
+              fill = d3.scale.category20();
+          
+          // start cloud simulation to figure out where words should be placed.
+          cloud().size([width, height])
+              .words(wordmap)
+              .timeInterval(20)
+              .padding(2)
+              .spiral("rectangular")
+              .fontSize(function(d) { return font_size(d.value); })
+              .font("Impact")
+              .text(function(d) { return d.key; })
+              .rotate(function() {
+                  return rotate_words ? (~~(Math.random() * 2) * 90) : 0;
+              })
+              .on("end", function(words){
+                  // once simulation has found word placements, let's draw the words to an svg.
+                  cloud().stop();
+                  svg
+                      .attr("width", width)
+                      .attr("height", height)
+                  .append("g")
+                      .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")
+                  .selectAll("text")
+                      .data(words)
+                  .enter().append("text")
+                      .style("font-family", "Impact")
+                      .style("font-size", function(d) { return font_size(d.value) + "px"; })
+                      .style("fill", function(d, i) { return fill(i); })
+                      .attr("text-anchor", "middle")
+                      .attr("transform", function(d) {
+                          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                      })
+                      .text(function(d) { return d.key; })
+                 
+.on("click", function(d) {
+    alert(d.text);
+	 $.redirect("table.php#myid",{ search: d.text,Submit:""}); 
+  });
+                  callback(d3.select('#word_cloud'));
+              })
+              .start();
+          }
+    </script>
+
+
+
+</body>
+</html>
+
